@@ -72,21 +72,21 @@ export const register = (email, password, name) => async (dispatch) => {
 export const addVehicle = (formData) => async (dispatch, getState) => {
     try {
 
-        const {
-            userInfo: { userInfo },
-        } = getState();
-
+        const userInfo = getState();
+        console.log(userInfo.login.userInfo.token);
+        
         const config = {
             headers: {
                 "Content-type": "multipart/form-data",
-                Authorization: `Bearer ${userInfo.token}`,
+                Authorization: `Bearer ${userInfo.login.userInfo.token}`,
             },
         };
+
         dispatch(addVehicleReq());
 
         const { data } = await axiosConfig.post('/addVehicle', formData, config);
         dispatch(addVehicleSuccess(data));
-            
+
     } catch (error) {
         const errorIs =
             error.response && error.response.data.message

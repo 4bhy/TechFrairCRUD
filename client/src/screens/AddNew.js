@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
+import { addVehicle } from '../actions/adminActions';
+import { useDispatch } from 'react-redux';
 
 const AddNew = () => {
 
-
+    const dispatch= useDispatch()
     const [formData, setFormData] = useState({
         name: '',
         description: '',
@@ -18,9 +20,6 @@ const AddNew = () => {
         const newRecfile = Array.from(event.target.files);
         setRecfile([...recfile, ...newRecfile]);
     };
-
-
-
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -41,7 +40,7 @@ const AddNew = () => {
             formDataToSend.append('recfile', image);
         });
 
-        // dispatch()
+        dispatch(addVehicle(formDataToSend))
     };
 
     return (
@@ -161,7 +160,6 @@ const AddNew = () => {
                                                     {/* <span class="flex items-center "><i class="fa fa-lock mr-1"></i> secure</span> */}
                                                 </div>
                                             </div>
-
                                             <div class="mt-3 text-center pb-3">
                                                 <button class=" h-12 text-lg w-32 bg-gray-800 rounded-2xl text-white hover:bg-gray-900">Submit</button>
                                             </div>

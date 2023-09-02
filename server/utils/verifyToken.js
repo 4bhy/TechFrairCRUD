@@ -13,12 +13,13 @@ const verifyToken = async (req, res, next) => {
     try {
       // Extract the token from the Authorization header
       token = req.headers.authorization.split(' ')[1];
-
+      console.log(token);
       // Verify the token using the secret key from environment variables
-      const decoded = jwt.verify(token, process.env.secretkey);
-
+      const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+      console.log(decoded);
+   
       // Attach the decoded username to the request object
-      req.user = decoded.username;
+      req.user = decoded.id;
 
       // Check if the user is not null
       if (req.user != null) {

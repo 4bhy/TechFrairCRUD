@@ -42,8 +42,8 @@ module.exports = {
         const user = await User.findOne({ email });
 
         if (user && (await user.matchPassword(password))) {
-            user.token = generateToken(user._id);
-            res.status(200).json({ user });
+            const token = generateToken(user._id);
+            res.status(200).json({ name: user.name, email: user.email, token: token });
         } else {
             res.status(404).json("Invalid EmailID or Password")
             throw new Error("Invalid Email or Password");
@@ -51,6 +51,7 @@ module.exports = {
     })),
 
     addVehicle: asyncHandler(async (req, res) => {
+        console.log(req.body);
         const {
             name,
             description,
@@ -60,6 +61,8 @@ module.exports = {
             model,
         } = req.body;
 
+            console.log(req.file);
+            
         const primaryImage = req.file.filename; // Assuming you use Multer for primary image
 
         // Assuming you have an array of secondary image file names

@@ -19,6 +19,6 @@ const storage = multer.diskStorage({
 
 router.post('/login', authUser)
 router.post('/register', registerUser)
-router.post('/addVehicle', verifyToken, upload.array('recfile', 4), addVehicle )
+router.post('/addVehicle', verifyToken, upload.array('recfile', 4), addVehicle)
 
 module.exports = router;
