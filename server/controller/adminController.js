@@ -56,24 +56,24 @@ module.exports = {
             name,
             description,
             price,
-            availableQuantity,
+            quantity,
             manufacturer,
             model,
         } = req.body;
 
-            console.log(req.file);
-            
-        const primaryImage = req.file.filename; // Assuming you use Multer for primary image
+        const filenames = req.files.map((file) => file.filename);
+
+        const primaryImage = filenames[0]; // Assuming you use Multer for primary image
 
         // Assuming you have an array of secondary image file names
         const secondaryImages = req.files.map((file) => file.filename);
-
+        console.log(secondaryImages);
         try {
             const newVehicle = new Vehicle({
                 name,
                 description,
                 price,
-                availableQuantity,
+                availableQuantity: quantity,
                 manufacturer,
                 model,
                 primaryImage,
@@ -84,9 +84,25 @@ module.exports = {
             console.log(savedVehicle);
             res.status(201).json(savedVehicle);
         } catch (error) {
+            console.log(error.message);
             res.status(500).json({ message: 'Failed to add the vehicle.' });
+        }
+    }),
+
+    getAllVehicles: asyncHandler(async (req, res) => {
+        try {
+            const vehicles = await Vehicle.find();
+
+            if (!vehicles) {
+                res.status(404).json({ message: 'No vehicles found.' });
+            } else {
+                res.status(200).json(vehicles);
+            }
+        } catch (error) {
+            console.error(error.message);
+            res.status(500).json({ message: 'Failed to fetch vehicles.' });
         }
     })
 }
-//test
+
 

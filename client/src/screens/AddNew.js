@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { addVehicle } from '../actions/adminActions';
 import { useDispatch } from 'react-redux';
 
 const AddNew = () => {
 
-    const dispatch= useDispatch()
+    const dispatch = useDispatch()
     const [formData, setFormData] = useState({
         name: '',
         description: '',
@@ -41,7 +41,14 @@ const AddNew = () => {
         });
 
         dispatch(addVehicle(formDataToSend))
+        setFormData("")
+        setRecfile([])
     };
+
+    useEffect(() => {
+        setFormData("")
+        setRecfile([])
+    }, [])
 
     return (
         <>

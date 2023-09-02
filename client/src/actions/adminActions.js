@@ -2,6 +2,7 @@ import { loginFail, loginReq, loginSuccess } from "../features/loginSlice";
 import axiosConfig from "../config/axios";
 import { registerFail, registerReq, registerSuccess } from "../features/registerSlice";
 import { addVehicleFail, addVehicleReq, addVehicleSuccess } from "../features/addVehicle";
+import { fetchVehiclesFail, fetchVehiclesReq, fetchVehiclesSuccess } from "../features/fetchVehicles";
 
 export const login = (email, password) => async (dispatch) => {
     try {
@@ -95,3 +96,30 @@ export const addVehicle = (formData) => async (dispatch, getState) => {
         dispatch(addVehicleFail(errorIs));
     }
 };
+
+
+export const getVehicles = () => async (dispatch, getState) => {
+    try {
+      const userInfo = getState();
+      const token = userInfo.login.userInfo.token;
+  
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+  
+      dispatch(fetchVehiclesReq());
+  
+      // Make a GET request to your backend API to fetch vehicles
+      const { data } = await axiosConfig.get('/getVehicles', config);
+  
+      dispatch(fetchVehiclesSuccess(data));
+    } catch (error) {
+      const errorIs =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      dispatch(fetchVehiclesFail(errorIs));
+    }
+  };

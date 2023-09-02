@@ -7,30 +7,30 @@ const vehicleSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    required: true,
+
   },
   price: {
     type: Number,
-    required: true,
+ 
   },
   availableQuantity: {
     type: Number,
-    required: true,
+  
   },
   primaryImage: {
-    type: String, // You can store the image URL
-    required: true,
+    type: String,
+   
   },
   secondaryImages: [{
-    type: String, // Store multiple image URLs in an array
+    type: String, 
   }],
   manufacturer: {
     type: String,
-    required: true,
+ 
   },
   model: {
     type: String,
-    required: true,
+
   },
 });
 
