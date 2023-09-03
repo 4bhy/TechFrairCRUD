@@ -4,6 +4,8 @@ import Register from "./screens/Register";
 import Dashboard from "./screens/Dashboard";
 import Details from "./screens/Details";
 import AddNew from "./screens/AddNew";
+import ForgotPassword from "./screens/ForgotPassword";
+import ResetPassword from "./screens/ResetPassword";
 
 
 function App() {
@@ -16,6 +18,8 @@ function App() {
           <Route path="/" element={<Dashboard/>} />
           <Route path="/details" element={<Details/>} />
           <Route path="/add" element={<AddNew/>} />
+          <Route path="/forgot-password" element={<ForgotPassword/>} />
+          <Route path="/reset-password" element={<ResetPassword/>} />
         </Routes>
       </BrowserRouter>
     </>

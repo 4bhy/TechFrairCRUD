@@ -2,6 +2,9 @@ const generateToken = require('../utils/generateToken')
 const User = require('../models/userModel')
 const Vehicle = require('../models/vehicleModel')
 const asyncHandler = require("express-async-handler");
+const nodemailer = require("nodemailer");
+const { RESET_PASSWORD_URL } = require("../constants/constants")
+
 
 module.exports = {
     registerUser: async (req, res) => {
@@ -170,11 +173,9 @@ module.exports = {
                 to: email, // list of receivers
                 subject: "Password Reset for Lounge", // Subject line
                 html: `<p>Hi there,</p>
-                   <p>You have requested to reset your password for Lounge. Please click on the following link to reset your password:</p>
+                   <p>You have requested to reset your password. Please click on the following link to reset your password:</p>
                    <a href="${link}">${link}</a>
-                   <p>If you did not make this request, please ignore this email.</p>
-                   <p>Best regards,</p>
-                   <p>Lounge</p>`, // html body
+                   <p>If you did not make this request, please ignore this email.</p>`, // html body
             });
 
             if (info) {
@@ -191,14 +192,9 @@ module.exports = {
     }),
 
     resetPassword: (async (req, res) => {
-
         try {
-
             const { email, password } = req.body;
-            console.log(password);
             const userData = await User.findOne({ email })
-            const host = await Host.findOne({ userId: userData._id })
-
             if (!userData) {
                 res.status(404).json("Invalid Email")
             } else {
@@ -210,7 +206,6 @@ module.exports = {
                     res.status(201).json({ user, host })
                 }
             }
-
         } catch (error) {
             console.log(error.message);
         }

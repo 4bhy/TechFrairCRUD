@@ -71,7 +71,7 @@ const Details = () => {
                                                 <div className="relative">
                                                     <a href="#">
                                                         <img
-                                                            src={`http://localhost:5000/assets/images/${secondaryImage}`}
+                                                            src={`https://techfrairbackend.onrender.com/assets/images/${secondaryImage}`}
                                                             className="w-96 h-48 rounded"
                                                             alt={`Secondary Vehicle ${index + 1}`}
                                                         />
