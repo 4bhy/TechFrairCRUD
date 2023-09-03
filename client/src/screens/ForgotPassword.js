@@ -15,7 +15,7 @@ const ForgotPassword = () => {
             window.alert("Please enter your registered email")
         } else {
             dispatch(getLinkAction(email))
-            navigate("/reset-password")
+            window.alert('Reset password link has been sent to your email')
         }
     }
     return (
@@ -65,7 +65,7 @@ const ForgotPassword = () => {
                             onClick={handleClick}
                             class="block w-full rounded-lg bg-indigo-600 px-5 py-3 text-sm font-medium text-white"
                         >
-                            Sign in
+                            Get Link
                         </button>
 
                         <p class="text-center text-sm text-gray-500">

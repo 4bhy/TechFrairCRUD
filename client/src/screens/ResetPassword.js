@@ -20,8 +20,6 @@ const ResetPassword = () => {
             dispatch(resetPassword(email, password))
             navigate("/login")
         }
-
-
     }
     return (
         <div>

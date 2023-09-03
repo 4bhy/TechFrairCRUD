@@ -158,7 +158,7 @@ module.exports = {
                 return res.status(404).json({ status: "User Not Exists!!" });
             }
             const token = await generateToken(oldUser._id)
-            const link = `${RESET_PASSWORD_URL}/${oldUser._id}/${token}`;
+            const link = `${RESET_PASSWORD_URL}`;
 
             var transporter = nodemailer.createTransport({
                 service: "gmail",
