@@ -1,6 +1,20 @@
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { deleteVehicle } from '../actions/adminActions'
 
 const Details = () => {
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const { loading, error, vehicleDetails } = useSelector((state) => state.fetchVehicle)
+
+    const handleDelete = async (vehicleId) => {
+        await dispatch(deleteVehicle(vehicleId))
+        navigate("/")
+    }
+
+
+
 
     return (
         <>
@@ -41,67 +55,42 @@ const Details = () => {
                     {/* <!-- Content --> */}
                     <div class="flex-1 px-2 sm:px-0">
                         <div class="flex justify-between items-center">
-                            <h3 class="text-3xl font-extralight text-white/50">Details</h3>
-                            <h3 class="text-3xl font-extralight text-white/50">DELETE</h3>
+                            <h3 class="text-sm font-bold text-white/50 cursor-pointer" onClick={() => {
+                                navigate(-1); // Go back to the previous page
+                            }}>GO BACK</h3>
+                            <h6 class="text-sm font-bold text-white/50 cursor-pointer" onClick={() => {
+                                handleDelete(vehicleDetails._id)
+                            }}>DELETE</h6>
                         </div>
                         <div class="mt-4">
-                            <div class="flex bg-gray-900 items-center justify-center">
+                            <div class="flex items-center justify-center">
                                 <div class="grid grid-cols-12 gap-2 gap-y-4 max-w-6xl">
-                                    <div class="col-span-12 sm:col-span-6 md:col-span-3">
-                                        <card class="w-full flex flex-col">
-                                            <div class="relative">
-
-                                                <a href="#">
-                                                    <img src="https://picsum.photos/seed/59/300/200" class="w-96 h-auto rouned" />
-                                                </a>
-
+                                    {vehicleDetails?.secondaryImages?.map((secondaryImage, index) => (
+                                        <div key={index} className="col-span-12 sm:col-span-6 md:col-span-3">
+                                            <div className="w-full flex flex-col">
+                                                <div className="relative">
+                                                    <a href="#">
+                                                        <img
+                                                            src={`http://localhost:5000/assets/images/${secondaryImage}`}
+                                                            className="w-96 h-48 rounded"
+                                                            alt={`Secondary Vehicle ${index + 1}`}
+                                                        />
+                                                    </a>
+                                                </div>
                                             </div>
-                                        </card>
-                                    </div>
-
-
-                                    <div class="col-span-12 sm:col-span-6 md:col-span-3">
-                                        <card class="w-full flex flex-col">
-                                            <div class="relative">
-                                                <a href="#">
-                                                    <img src="https://picsum.photos/seed/60/300/200" class="w-96 h-auto" />
-                                                </a>
-
-                                            </div>
-                                        </card>
-                                    </div>
-
-
-                                    <div class="col-span-12 sm:col-span-6 md:col-span-3">
-                                        <card class="w-full flex flex-col">
-                                            <div class="relative">
-                                                <a href="#">
-                                                    <img src="https://picsum.photos/seed/22/300/200" class="w-96 h-auto" />
-                                                </a>
-                                            </div>
-                                        </card>
-                                    </div>
-
-
-                                    <div class="col-span-12 sm:col-span-6 md:col-span-3">
-                                        <card class="w-full flex flex-col">
-                                            <div class="relative">
-                                                <a href="#">
-                                                    <img src="https://picsum.photos/seed/90/300/200" class="w-96 h-auto" />
-                                                </a>
-                                            </div>
-                                        </card>
-                                    </div>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                             <div class="max-w-4xl px-10 my-4 py-6 rounded-lg">
                                 <div class="flex justify-between items-center">
                                     {/* <span class="font-light text-gray-600">mar 10, 2019</span> */}
-                                    <a class="px-2 py-1 bg-gray-600 text-gray-100 font-bold rounded hover:bg-gray-500" href="#">Design</a>
+                                    <a class="px-2 py-1 bg-gray-600 text-gray-100 font-bold rounded hover:bg-gray-500" href="#">{vehicleDetails?.name}</a>
                                 </div>
                                 <div class="mt-2">
-                                    <a class="text-2xl text-gray-400 font-bold hover:text-gray-600" href="#">Accessibility tools for designers and developers</a>
-                                    <p class="mt-2 text-gray-300">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Tempora expedita dicta totam aspernatur doloremque. Excepturi iste iusto eos enim reprehenderit nisi, accusamus delectus nihil quis facere in modi ratione libero!</p>
+                                    <a class="text-2xl text-gray-400 font-bold hover:text-gray-600" href="#">Manufacturer: {vehicleDetails?.manufacturer}</a>
+                                    <p class="mt-2 text-gray-300">Description: {vehicleDetails?.description}</p>
+                                    <p class="mt-2 text-gray-300">Quantity: {vehicleDetails?.availableQuantity}</p>
                                 </div>
                                 {/* <div class="flex justify-between items-center mt-4">
                                     <a class="text-blue-600 hover:underline" href="#">Read more</a>
@@ -116,7 +105,7 @@ const Details = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div >
         </>
     )
 }

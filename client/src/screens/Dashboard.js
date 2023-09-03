@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchVehicle, fetchVehicles } from '../actions/adminActions'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 
 const Dashboard = () => {
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
+
     const [search, setSearch] = useState('')
     const { loading, vehicles, error } = useSelector(state => state.fetchVehicles)
     console.log(vehicles);
@@ -17,6 +19,7 @@ const Dashboard = () => {
 
     const handleClick = (vehicleId) => {
         dispatch(fetchVehicle(vehicleId))
+        navigate('/details')
     }
 
     useEffect(() => {
@@ -66,13 +69,20 @@ const Dashboard = () => {
                         <div class="flex justify-between items-center">
                             <h3 class="text-3xl font-extralight text-white/50">Vehicles</h3>
                             <div class="inline-flex items-center space-x-2">
-                                <div class="pt-2 relative mx-auto text-gray-600">
+                                <div class="pt-2 relative mx-auto flex gap-2 text-gray-600">
                                     <input class="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none"
                                         type="search"
                                         onChange={(e) => {
                                             setSearch(e.target.value)
                                         }}
                                         name="search" placeholder="Search" />
+                                    <div class="relative">
+                                        <select class="border-2 border-gray-300 bg-white h-10 px-5 rounded-lg text-sm focus:outline-none">
+                                            <option value="">Filter</option>
+                                            <option value="lowToHigh">Price Low to High</option>
+                                            <option value="highToLow">Price High to Low</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>

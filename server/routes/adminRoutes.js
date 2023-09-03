@@ -1,6 +1,6 @@
 const express = require("express");
 const verifyToken = require('../utils/verifyToken');
-const { authUser, registerUser, addVehicle, getAllVehicles, getVehicle } = require("../controller/adminController");
+const { authUser, registerUser, addVehicle, getAllVehicles, getVehicle, deleteVehicle, getForgotPasswordLink, resetPassword } = require("../controller/adminController");
 const multer = require('multer');
 
 const router = express.Router();
@@ -22,5 +22,8 @@ router.post('/register', registerUser)
 router.get('/getVehicles',verifyToken, getAllVehicles)
 router.post('/addVehicle', verifyToken, upload.array('recfile', 4), addVehicle)
 router.get('/getVehicle/:id',verifyToken, getVehicle)
+router.delete('/deleteVehicle/:id',verifyToken, deleteVehicle)
+router.post("/get-link", getForgotPasswordLink)
+router.post("/reset-password", resetPassword)
 
 module.exports = router;
