@@ -3,6 +3,7 @@ import axiosConfig from "../config/axios";
 import { registerFail, registerReq, registerSuccess } from "../features/registerSlice";
 import { addVehicleFail, addVehicleReq, addVehicleSuccess } from "../features/addVehicle";
 import { fetchVehiclesFail, fetchVehiclesReq, fetchVehiclesSuccess } from "../features/fetchVehicles";
+import { fetchVehicleFail, fetchVehicleReq, fetchVehicleSuccess } from "../features/fetchVehicle";
 
 export const login = (email, password) => async (dispatch) => {
     try {
@@ -98,7 +99,7 @@ export const addVehicle = (formData) => async (dispatch, getState) => {
 };
 
 
-export const getVehicles = () => async (dispatch, getState) => {
+export const fetchVehicles = () => async (dispatch, getState) => {
     try {
       const userInfo = getState();
       const token = userInfo.login.userInfo.token;
@@ -121,5 +122,32 @@ export const getVehicles = () => async (dispatch, getState) => {
           ? error.response.data.message
           : error.message;
       dispatch(fetchVehiclesFail(errorIs));
+    }
+  };
+
+
+  export const fetchVehicle = (vehicleId) => async (dispatch, getState) => {
+    try {
+      const userInfo = getState();
+      const token = userInfo.login.userInfo.token;
+  
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+  
+      dispatch(fetchVehicleReq());
+  
+      // Make a GET request to your backend API to fetch the details of the individual vehicle
+      const { data } = await axiosConfig.get(`/getVehicle/${vehicleId}`, config);
+  
+      dispatch(fetchVehicleSuccess(data));
+    } catch (error) {
+      const errorIs =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      dispatch(fetchVehicleFail(errorIs));
     }
   };

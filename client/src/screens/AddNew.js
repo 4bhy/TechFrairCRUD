@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { addVehicle } from '../actions/adminActions';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import Loading from '../components/Loading';
+import { addVehicleSuccess } from '../features/addVehicle';
 
 const AddNew = () => {
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const [formData, setFormData] = useState({
         name: '',
         description: '',
@@ -23,26 +27,29 @@ const AddNew = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (!formData.name || !formData.description || !formData.manufacturer || !formData.model || !formData.price || !formData.quantity) {
+            window.alert("Please include all fields")
+        } else {
+            // Create a new FormData object
+            const formDataToSend = new FormData();
 
-        // Create a new FormData object
-        const formDataToSend = new FormData();
+            // Append form data fields
+            formDataToSend.append('name', formData.name);
+            formDataToSend.append('description', formData.description);
+            formDataToSend.append('manufacturer', formData.manufacturer);
+            formDataToSend.append('model', formData.model);
+            formDataToSend.append('price', formData.price);
+            formDataToSend.append('quantity', formData.quantity);
 
-        // Append form data fields
-        formDataToSend.append('name', formData.name);
-        formDataToSend.append('description', formData.description);
-        formDataToSend.append('manufacturer', formData.manufacturer);
-        formDataToSend.append('model', formData.model);
-        formDataToSend.append('price', formData.price);
-        formDataToSend.append('quantity', formData.quantity);
+            // Append image files
+            recfile.forEach((image) => {
+                formDataToSend.append('recfile', image);
+            });
 
-        // Append image files
-        recfile.forEach((image) => {
-            formDataToSend.append('recfile', image);
-        });
-
-        dispatch(addVehicle(formDataToSend))
-        setFormData("")
-        setRecfile([])
+            dispatch(addVehicle(formDataToSend))
+            setFormData("")
+            setRecfile([])
+        }
     };
 
     useEffect(() => {
@@ -50,8 +57,19 @@ const AddNew = () => {
         setRecfile([])
     }, [])
 
+    const { data, loading, error } = useSelector((state) => state.addVehicle)
+
+    useEffect(() => {
+        if (data) {
+            navigate('/')
+            dispatch(addVehicleSuccess(null))
+        }
+    }, [data])
+
+
     return (
         <>
+            {loading && <div class="z-50 fixed top-0 left-0 w-full h-full flex justify-center items-center bg-opacity-50"><Loading /></div>}
             <div class="bg-gray-900 min-h-screen flex items-center justify-center">
                 <div class="bg-gray-800 flex-1 flex flex-col space-y-5 lg:space-y-0 lg:flex-row lg:space-x-10 max-w-6xl sm:p-6 sm:my-2 sm:mx-4 sm:rounded-2xl">
                     <div class="bg-gray-900 px-2 lg:px-4 py-2 lg:py-10 sm:rounded-xl flex lg:flex-col justify-between">
@@ -88,13 +106,14 @@ const AddNew = () => {
                     </div>
                     {/* <!-- Content --> */}
                     <div class="flex-1 px-3 sm:px-0">
-                        <div class="p-8">
+                        <div class="p-6">
                             <div class="max-w-md mx-auto bg-gray-700 rounded-lg overflow-hidden md:max-w-lg">
                                 <div class="md:flex">
                                     <div class="w-full">
                                         <div class="p-4">
                                             <span class="text-lg font-bold text-white">Add New Vehicle</span>
                                         </div>
+
 
                                         <form class="p-3" onSubmit={handleSubmit} encType="multipart/form-data">
                                             <div class="mb-3">

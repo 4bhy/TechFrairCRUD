@@ -91,6 +91,7 @@ module.exports = {
 
     getAllVehicles: asyncHandler(async (req, res) => {
         try {
+            console.log("8");
             const vehicles = await Vehicle.find();
 
             if (!vehicles) {
@@ -101,6 +102,23 @@ module.exports = {
         } catch (error) {
             console.error(error.message);
             res.status(500).json({ message: 'Failed to fetch vehicles.' });
+        }
+    }),
+
+    getVehicle: asyncHandler(async (req, res) => {
+        try {
+            const { id } = req.params;
+
+            const vehicle = await Vehicle.findById(id);
+
+            if (!vehicle) {
+                return res.status(404).json({ message: 'Vehicle not found.' });
+            }
+
+            res.status(200).json(vehicle);
+        } catch (error) {
+            console.error(error.message);
+            res.status(500).json({ message: 'Failed to fetch vehicle details.' });
         }
     })
 }
